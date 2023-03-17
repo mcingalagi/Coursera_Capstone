@@ -1,0 +1,520 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: MDM Search API
+paths:
+  /search:
+    post:
+      consumes:
+        - application/xml
+      produces:
+        - application/xml
+      parameters:
+        - in: body
+          name: SearchRequest
+          description: The search request object
+          required: true
+          schema:
+            $ref: '#/definitions/SearchRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/SearchResponse'
+definitions:
+  SearchRequest:
+    type: object
+    properties:
+      ExactMatchPerson:
+        $ref: '#/definitions/ExactMatchPerson'
+      ExactMatchOrganization:
+        $ref: '#/definitions/ExactMatchOrganization'
+      ProbabilisticMatchPerson:
+        $ref: '#/definitions/ProbabilisticMatchPerson'
+      ProbabilisticMatchOrganization:
+        $ref: '#/definitions/ProbabilisticMatchOrganization'
+    required:
+      - ExactMatchPerson
+  ExactMatchPerson:
+    type: object
+    properties:
+      Name:
+        $ref: '#/definitions/PersonName'
+      DOB:
+        type: string
+        format: date
+      Id:
+        $ref: '#/definitions/PersonId'
+      Email:
+        $ref: '#/definitions/PersonEmail'
+      Address:
+        $ref: '#/definitions/PersonAddress'
+      Phone:
+        $ref: '#/definitions/PersonPhone'
+    required:
+      - Name
+  ExactMatchOrganization:
+    type: object
+    properties:
+      Name:
+        $ref: '#/definitions/OrganizationName'
+      Id:
+        $ref: '#/definitions/OrganizationId'
+      Address:
+        $ref: '#/definitions/OrganizationAddress'
+      Phone:
+        $ref: '#/definitions/OrganizationPhone'
+    required:
+      - Name
+  ProbabilisticMatchPerson:
+    type: object
+    properties:
+      Name:
+        $ref: '#/definitions/PersonName'
+      Email:
+        $ref: '#/definitions/PersonEmail'
+      Address:
+        $ref: '#/definitions/PersonAddress'
+      Phone:
+        $ref: '#/definitions/PersonPhone'
+    required:
+      - Name
+  ProbabilisticMatchOrganization:
+    type: object
+    properties:
+      Name:
+        $ref: '#/definitions/OrganizationName'
+      Address:
+        $ref: '#/definitions/OrganizationAddress'
+      Phone:
+        $ref: '#/definitions/OrganizationPhone'
+    required:
+      - Name
+  PersonName:
+    type: object
+    properties:
+      Prefix:
+        type: string
+      First:
+        type: string
+      Middle:
+        type: string
+      Last:
+        type: string
+      Suffix:
+        type: string
+    required:
+      - Last
+  OrganizationName:
+    type: object
+    properties:
+      LegalName:
+        type: string
+      DbaName:
+        type: string
+      TradeName:
+        type: string
+    required:
+      - LegalName
+  PersonId:
+    type: object
+    properties:
+      SSN:
+        type: string
+      Passport:
+        type: string
+      DriverLicense:
+        type: string
+  OrganizationId:
+    type: object
+    properties:
+      EIN:
+        type: string
+      DUNS:
+        type: string
+      TaxId:
+        type: string
+  Person
+
+
+
+<SearchResponse>
+  <PersonResults>
+    <Person>
+      <Id>123456</Id>
+      <Name>
+        <FirstName>John</FirstName>
+        <LastName>Doe</LastName>
+        <Type>Primary</Type>
+      </Name>
+      <Address>
+        <Street>123 Main St</Street>
+        <City>New York</City>
+        <State>NY</State>
+        <ZipCode>10001</ZipCode>
+        <Type>Home</Type>
+      </Address>
+      <Phone>
+        <Number>555-555-5555</Number>
+        <Type>Mobile</Type>
+      </Phone>
+      <Email>
+        <Address>john.doe@example.com</Address>
+        <Type>Primary</Type>
+      </Email>
+    </Person>
+    <Person>
+      <Id>789012</Id>
+      <Name>
+        <FirstName>Jane</FirstName>
+        <LastName>Doe</LastName>
+        <Type>Primary</Type>
+      </Name>
+      <Address>
+        <Street>456 Oak Ave</Street>
+        <City>New York</City>
+        <State>NY</State>
+        <ZipCode>10002</ZipCode>
+        <Type>Home</Type>
+      </Address>
+      <Phone>
+        <Number>555-555-1234</Number>
+        <Type>Home</Type>
+      </Phone>
+      <Email>
+        <Address>jane.doe@example.com</Address>
+        <Type>Primary</Type>
+      </Email>
+    </Person>
+  </PersonResults>
+  <OrganizationResults>
+    <Organization>
+      <Id>123</Id>
+      <Name>
+        <Value>IBM</Value>
+        <Type>Primary</Type>
+      </Name>
+      <Address>
+        <Street>1 IBM Plaza</Street>
+        <City>Armonk</City>
+        <State>NY</State>
+        <ZipCode>10504</ZipCode>
+        <Type>Headquarters</Type>
+      </Address>
+      <Phone>
+        <Number>555-555-5555</Number>
+        <Type>General</Type>
+      </Phone>
+      <Email>
+        <Address>info@ibm.com</Address>
+        <Type>General</Type>
+      </Email>
+    </Organization>
+    <Organization>
+      <Id>456</Id>
+      <Name>
+        <Value>Microsoft</Value>
+        <Type>Primary</Type>
+      </Name>
+      <Address>
+        <Street>1 Microsoft Way</Street>
+        <City>Redmond</City>
+        <State>WA</State>
+        <ZipCode>98052</ZipCode>
+        <Type>Headquarters</Type>
+      </Address>
+      <Phone>
+        <Number>555-555-1234</Number>
+        <Type>General</Type>
+      </Phone>
+      <Email>
+        <Address>info@microsoft.com</Address>
+        <Type>General</Type>
+      </Email>
+    </Organization>
+  </OrganizationResults>
+</SearchResponse>
+
+
+<SearchRequest>
+  <PersonSearch>
+    <ExactMatch>
+      <Name>
+        <GivenName>John</GivenName>
+        <MiddleName>Jacob</MiddleName>
+        <Surname>Doe</Surname>
+        <NameType>Legal</NameType>
+      </Name>
+      <Name>
+        <GivenName>Johnny</GivenName>
+        <Surname>Doe</Surname>
+        <NameType>Alias</NameType>
+      </Name>
+      <DOB>1990-01-01</DOB>
+      <Identification>
+        <IDType>SocialSecurity</IDType>
+        <IDNumber>123-45-6789</IDNumber>
+      </Identification>
+    </ExactMatch>
+    <ProbabilisticMatch>
+      <Name>
+        <GivenName>John</GivenName>
+        <MiddleName>J</MiddleName>
+        <Surname>Doe</Surname>
+        <NameType>Legal</NameType>
+      </Name>
+      <Address>
+        <AddressType>Residential</AddressType>
+        <Street>123 Main St</Street>
+        <City>New York</City>
+        <State>NY</State>
+        <PostalCode>10001</PostalCode>
+        <Country>USA</Country>
+      </Address>
+      <Phone>
+        <PhoneType>Mobile</PhoneType>
+        <Number>555-555-5555</Number>
+      </Phone>
+      <Email>
+        <EmailType>Personal</EmailType>
+        <Address>johndoe@example.com</Address>
+      </Email>
+    </ProbabilisticMatch>
+  </PersonSearch>
+  <OrganizationSearch>
+    <ExactMatch>
+      <Name>Acme Corporation</Name>
+      <Identification>
+        <IDType>TaxID</IDType>
+        <IDNumber>123456789</IDNumber>
+      </Identification>
+    </ExactMatch>
+    <ProbabilisticMatch>
+      <Name>Acme Corporation</Name>
+      <Address>
+        <AddressType>Headquarters</AddressType>
+        <Street>456 Main St</Street>
+        <City>San Francisco</City>
+        <State>CA</State>
+        <PostalCode>94105</PostalCode>
+        <Country>USA</Country>
+      </Address>
+      <Phone>
+        <PhoneType>Main</PhoneType>
+        <Number>555-123-4567</Number>
+      </Phone>
+      <Email>
+        <EmailType>General</EmailType>
+        <Address>info@acmecorp.com</Address>
+      </Email>
+    </ProbabilisticMatch>
+  </OrganizationSearch>
+</SearchRequest>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://www.ibm.com/mdm/port/Party" xmlns:sch="http://www.ibm.com/mdm/schema">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:searchPersonProbabilistic>
+         <sch:RequestControl>
+            <sch:requestID>11111</sch:requestID>
+            <sch:DWLControl>
+               <sch:requesterName>cusadmin</sch:requesterName>
+               <sch:requesterLanguage>100</sch:requesterLanguage>
+            </sch:DWLControl>
+         </sch:RequestControl>
+         <sch:ProbabilisticPersonSearchBObj>
+            <!--Optional:-->
+            <!--<sch:MinSuspectType>?</sch:MinSuspectType>-->
+            <!--Optional:-->
+            <sch:MinScore>0</sch:MinScore>
+            <!--Optional:-->
+            <!--<sch:MaxReturn>?</sch:MaxReturn>-->
+            <!--Optional:-->
+            <!--<sch:PMEContextKey>?</sch:PMEContextKey>-->
+            <!--Zero or more repetitions:-->
+            <TCRMPersonNameBObj>
+               <GivenNameOne>VANESSA</GivenNameOne>
+               <!--<StdGivenNameOne>VANESSA</StdGivenNameOne>-->
+               <LastName>DANA</LastName>
+               <!--<StdLastName>DANA</StdLastName>-->
+            </TCRMPersonNameBObj>
+            <TCRMPersonBObj xmlns="http://www.ibm.com/mdm/schema">
+               <BirthDate>1942-07-01</BirthDate>
+               <GenderType>F</GenderType>
+            </TCRMPersonBObj>
+         </sch:ProbabilisticPersonSearchBObj>
+      </par:searchPersonProbabilistic>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <port:searchPersonProbabilisticResponse xmlns:port="http://www.ibm.com/mdm/port/Party">
+         <ResponseControl xmlns="http://www.ibm.com/mdm/schema">
+            <ResultCode>SUCCESS</ResultCode>
+            <ServiceTime>23</ServiceTime>
+            <DWLControl>
+               <requesterName>mdmadmin</requesterName>
+               <requesterLanguage>100</requesterLanguage>
+               <requesterLocale>en</requesterLocale>
+               <userRole>mdm_admin</userRole>
+               <requestID>11111</requestID>
+            </DWLControl>
+         </ResponseControl>
+         <TxResult xmlns="http://www.ibm.com/mdm/schema">
+            <ResultCode>SUCCESS</ResultCode>
+         </TxResult>
+         <ProbabilisticPersonSearchResultBObj xmlns="http://www.ibm.com/mdm/schema">
+            <SearchScore>11.2</SearchScore>
+            <SuspectType>3</SuspectType>
+            <SuspectValue>B</SuspectValue>
+            <TCRMPersonSearchResultBObj>
+               <ComponentID>1014</ComponentID>
+               <PartyId>911111111</PartyId>
+               <DateOfBirth>1942-07-01 00:00:00.0</DateOfBirth>
+               <GivenNameOne>VANESSA</GivenNameOne>
+               <LastName>DANA</LastName>
+               <Gender>F</Gender>
+               <PartyActiveIndicator>Y</PartyActiveIndicator>
+               <ResultNumber>1</ResultNumber>
+               <ResultsFound>1</ResultsFound>
+            </TCRMPersonSearchResultBObj>
+         </ProbabilisticPersonSearchResultBObj>
+      </port:searchPersonProbabilisticResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://www.ibm.com/mdm/port/Party" xmlns:sch="http://www.ibm.com/mdm/schema">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:searchPersonProbabilistic>
+         <sch:RequestControl>
+            <sch:requestID>11111</sch:requestID>
+            <sch:DWLControl>
+               <sch:requesterName>cusadmin</sch:requesterName>
+               <sch:requesterLanguage>100</sch:requesterLanguage>
+            </sch:DWLControl>
+         </sch:RequestControl>
+         <sch:ProbabilisticPersonSearchBObj>
+            <!--Optional:-->
+            <!--<sch:MinSuspectType>?</sch:MinSuspectType>-->
+            <!--Optional:-->
+            <sch:MinScore>0</sch:MinScore>
+            <!--Optional:-->
+            <!--<sch:MaxReturn>?</sch:MaxReturn>-->
+            <!--Optional:-->
+            <!--<sch:PMEContextKey>?</sch:PMEContextKey>-->
+            <!--Zero or more repetitions:-->
+            <TCRMPersonNameBObj>
+               <GivenNameOne>JACKSON</GivenNameOne>
+               <LastName>SUSAN</LastName>
+            </TCRMPersonNameBObj>
+            <TCRMPersonBObj xmlns="http://www.ibm.com/mdm/schema">
+               <BirthDate>1955-02-02</BirthDate>
+               <GenderType>F</GenderType>
+            </TCRMPersonBObj>
+            <TCRMPartyIdentificationBObj>
+               <IdentificationType>1</IdentificationType>
+               <IdentificationNumber>482000001</IdentificationNumber>
+            </TCRMPartyIdentificationBObj>
+            <TCRMPartyIdentificationBObj>
+               <IdentificationType>3</IdentificationType>
+               <IdentificationNumber>11144151</IdentificationNumber>
+            </TCRMPartyIdentificationBObj>
+            <TCRMPartyAddressBObj>
+                    <PartyAddressIdPK/>
+                    <PartyId/>
+                    <AddressId/>
+                    <AddressUsageType>1</AddressUsageType>
+                    <CareOf/>
+                    <StartDate>1997-07-07</StartDate>
+                    <EndDate/>
+                    <EffectStartMonthDay>0720</EffectStartMonthDay>
+                    <EffectEndMonthDay>0615</EffectEndMonthDay>
+                    <EffectTimeStart/>
+                    <EffectTimeEnd/>
+                    <PreferredAddressIndicator/>
+                    <UndeliveredReasonType/>
+                    <AddressGroupLastUpdateDate/>
+                    <AddressGroupLastUpdateUser/>
+                    <LocationGroupLastUpdateDate/>
+                    <LocationGroupLastUpdateUser/>
+                    <TCRMAddressBObj>
+                        <AddressIdPK/>
+                        <ResidenceType>1</ResidenceType>
+                        <AddressLineOne>4 Apple Ave</AddressLineOne>
+                        <AddressLineTwo/>
+                        <AddressLineThree/>
+                        <City>Toronto</City>
+                        <ZipPostalCode>M5C 1P7</ZipPostalCode>
+                        <ResidenceNumber>1</ResidenceNumber>
+                        <ProvinceStateType>108</ProvinceStateType>
+                        <CountyCode>1</CountyCode>
+                        <CountryType>31</CountryType>
+                        <StandardFormatingIndicator/>
+                        <StandardFormatingOverride/>
+                        <LatitudeDegrees>180</LatitudeDegrees>
+                        <LongitudeDegrees>90</LongitudeDegrees>
+                        <AddressLastUpdateDate/>
+                        <AddressLastUpdateUser/>
+                    </TCRMAddressBObj>
+                </TCRMPartyAddressBObj>
+         </sch:ProbabilisticPersonSearchBObj>
+      </par:searchPersonProbabilistic>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <port:searchPersonProbabilisticResponse xmlns:port="http://www.ibm.com/mdm/port/Party">
+         <ResponseControl xmlns="http://www.ibm.com/mdm/schema">
+            <ResultCode>SUCCESS</ResultCode>
+            <ServiceTime>25</ServiceTime>
+            <DWLControl>
+               <requesterName>mdmadmin</requesterName>
+               <requesterLanguage>100</requesterLanguage>
+               <requesterLocale>en</requesterLocale>
+               <userRole>mdm_admin</userRole>
+               <requestID>11111</requestID>
+            </DWLControl>
+         </ResponseControl>
+         <TxResult xmlns="http://www.ibm.com/mdm/schema">
+            <ResultCode>SUCCESS</ResultCode>
+         </TxResult>
+         <ProbabilisticPersonSearchResultBObj xmlns="http://www.ibm.com/mdm/schema">
+            <SearchScore>17.7</SearchScore>
+            <SuspectType>1</SuspectType>
+            <SuspectValue>A1</SuspectValue>
+            <TCRMPersonSearchResultBObj>
+               <ComponentID>1014</ComponentID>
+               <AddressId>322665773522013368</AddressId>
+               <AddrLineOne>4 Apple Ave</AddrLineOne>
+               <CityName>Toronto</CityName>
+               <CountryType>31</CountryType>
+               <CountyCode>1</CountyCode>
+               <IdentificationNum>482000001</IdentificationNum>
+               <IdentificationType>1</IdentificationType>
+               <LatitudeDegrees>180</LatitudeDegrees>
+               <LongtitudeDegrees>90</LongtitudeDegrees>
+               <PartyId>321665773521730558</PartyId>
+               <ProvState>ON</ProvState>
+               <ProvStateType>108</ProvStateType>
+               <ZipPostalCode>M5C 1P7</ZipPostalCode>
+               <DateOfBirth>1955-02-22 00:00:00.0</DateOfBirth>
+               <GivenNameOne>SUSAN</GivenNameOne>
+               <LastName>JACKSON</LastName>
+               <CountryValue>Canada</CountryValue>
+               <Gender>F</Gender>
+               <IdentificationTypeValue>Social Security Number</IdentificationTypeValue>
+               <PartyActiveIndicator>Y</PartyActiveIndicator>
+               <ResultNumber>1</ResultNumber>
+               <ResultsFound>1</ResultsFound>
+            </TCRMPersonSearchResultBObj>
+         </ProbabilisticPersonSearchResultBObj>
+      </port:searchPersonProbabilisticResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
