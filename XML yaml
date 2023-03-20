@@ -1,3 +1,28 @@
+components:
+  schemas:
+    myObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      xml:
+        namespace: http://example.com/myObject
+        prefix: myobj
+        attribute: true
+        wrapped: false
+        schemaLocation: http://example.com/myObject/schema.xsd
+      example:
+        <myobj:myObject xmlns:myobj="http://example.com/myObject" xsi:schemaLocation="http://example.com/myObject schema.xsd">
+          <id>123</id>
+          <name>John Doe</name>
+        </myobj:myObject>
+
+
+
+
+
 swagger: '2.0'
 info:
   title: getParty API
