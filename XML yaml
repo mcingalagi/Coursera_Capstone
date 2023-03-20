@@ -1,3 +1,65 @@
+swagger: '2.0'
+info:
+  title: getParty API
+  version: '1.0'
+host: your-api.com
+schemes:
+  - https
+paths:
+  /getparty:
+    post:
+      summary: getParty endpoint
+      consumes:
+        - application/xml
+      produces:
+        - application/xml
+      parameters:
+        - in: body
+          name: requestBody
+          required: true
+          schema:
+            type: object
+            properties:
+              TCRMService:
+                type: object
+                properties:
+                  RequestControl:
+                    type: object
+                    properties:
+                      requestID:
+                        type: string
+                      DWLControl:
+                        type: object
+                        properties:
+                          requesterName:
+                            type: string
+                          requesterLocale:
+                            type: string
+                  TCRMInquiry:
+                    type: object
+                    properties:
+                      InquiryType:
+                        type: string
+                      InquiryParam:
+                        type: object
+                        properties:
+                          tcrmParam:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+      responses:
+        '200':
+          description: OK
+
+
+
+
+
 swagger: "2.0"
 info:
   version: "1.0.0"
