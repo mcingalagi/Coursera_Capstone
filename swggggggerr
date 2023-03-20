@@ -1,0 +1,340 @@
+openapi: 3.0.0  
+info:
+  version: "1.0.0"
+  title: "PISearchParty"
+  description: | 
+        ## PISearchParty transaction is a wrapper transaction that allows to search for Person or Organization using both Deterministic and Probabilistic matching styles. 
+        
+        ## Input object is PISearchInput which consists of several fields and output object is PISearchOutput. 
+        
+        ### Mandatory Input for Deterministic Person Search 
+           - LastName or
+           - Address  or
+           - IdentificationType and IdentificationNum   or
+           - ContactMethodReferenceNumber and ContactMethodType or
+           - DateOfBirth or
+           - AdminPartyId
+        
+           **Note: For Deterministic SearchType for Person based on the search criteria provided, the search is performed using a specific search strategy and execution path.
+           [Please refer to the below link for more detailed explanation.](https://www.ibm.com/docs/en/imdm/11.6?topic=transactions-searchperson)**  
+        
+           | Path| Search criteria provided | Search by strategy                             |
+           | ----| -------------------------| -----------------------------------|
+           | 1   | IdentificationType and IdentificationNum                  | Identification   |
+           | 2   | AdminPartyID              | Party Equivalency       |
+           | 3   | LastName + Full Address (AddrLineOne, CityName, ZipPostalCode, ProvStateType,  CountryType)             | Person Name    |
+           | 4   | Full Address (AddrLineOne, CityName, ZipPostalCode, ProvStateType, CountryType)             | Person Name    |
+           | 5   | CityName + ZipPostalCode + ProvStateType             | Address    |
+           | 6   | ContactMethodReferenceNumber and ContactMethodType             | Contact Method    |
+           | 7   | LastName             | Person Name    |
+           | 8   | DateOfBirth, with no wildcards or look-alikes             | Date of Birth    |
+        
+           ### Mandatory Input for Deterministic Organization Search
+           - OrganizationName or
+           - Address  or
+           - IdentificationType and IdentificationNum   or
+           - ContactMethodReferenceNumber and ContactMethodType or
+           - EstablishedDate or
+           - AdminPartyId
+        
+           **Note: For Deterministic SearchType for Organization based on the search criteria provided, the search is performed using a specific search strategy and execution path. [Please refer to the below link for more detailed explanation.](https://www.ibm.com/docs/en/imdm/11.6?topic=transactions-searchorganization)**  
+          
+           | Path| Search criteria provided | Search by strategy                             |
+           | ----| -------------------------| -----------------------------------|
+           | 1   | IdentificationType and IdentificationNum                  | Identification   |
+           | 2   | AdminPartyID              | Party Equivalency       |
+           | 3   | OrganizationName + Full Address (AddrLineOne, CityName, ZipPostalCode,  ProvStateType, CountryType)             | Organization Name    |
+           | 4   | Full Address (AddrLineOne, CityName, ZipPostalCode, ProvStateType, CountryType)             | Person Name    |
+           | 5   | CityName + ZipPostalCode + ProvStateType             | Address    |
+           | 6   | ContactMethodReferenceNumber and ContactMethodType             | Contact  Method    |
+           | 7   | Organization Name             | Organization Name    |
+           | 8   | EstablishedDate, with no wildcards or look-alikes             | Established Date    |
+
+servers:
+  - url: https://hostname:9043/com.ibm.mdm.server.ws.restful/resources/MDMWSRESTful
+paths:
+  /PISearchParty:  
+    put:
+      summary: Search for Person or Organization using Deterministic and Probabilistic Matching
+      description: Search for Person or Organization using Deterministic and Probabilistic Matching
+      operationId: "PISearchPerson"
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PISearchInputReq'
+        required: true  
+          
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PISearchOutputRes'
+
+
+components:
+  schemas:
+    PISearchInputReq:
+      type: object
+      properties:
+        TCRMService:
+          type: object
+          properties:
+              RequestControl:
+                type: object
+                properties:
+                  requestID:
+                    type: integer
+                    example: 11111
+                  DWLControl:
+                    type: object
+                    properties:
+                      requesterName:
+                        type: string
+                        example: mdmadmin
+                      requesterLanguage:
+                        type: integer
+                        default: 100
+                      pageStartIndex:
+                        type: integer
+                        example: 1
+                      pageEndIndex:
+                        type: integer
+                        example: 10
+                      returnAvailableResultCount:
+                        type: boolean
+                        default: true
+              TCRMTx:
+                type: object
+                properties:
+                  TCRMTxType:
+                    type: string
+                    default: PISearchParty
+                  TCRMTxObject:
+                    type: string
+                    default: PISearchInputReqBobj
+                  TCRMObject:
+                    type: object
+                    $ref: '#/components/schemas/PISearchInputReqBObj'
+                      
+      xml:
+        name: PISearchInputReq
+        
+    PISearchOutputRes:
+      type: object
+      properties:
+        TCRMService:
+          type: object
+          properties:
+              RequestControl:
+                type: object
+                properties:
+                  ResultCode:
+                    type: string
+                    example: Success
+                  ServiceTime:
+                    type: integer
+                    example: 60
+                  DWLControl:
+                    type: object
+                    properties:
+                      requesterName:
+                        type: string
+                        example: mdmadmin
+                      requesterLanguage:
+                        type: integer
+                        default: 100
+                      requesterLocale:
+                        type: string
+                        default: en
+                      userRole:
+                        type: string
+                        example: mdm_admin
+                      pageStartIndex:
+                        type: integer
+                        example: 1
+                      pageEndIndex:
+                        type: integer
+                        example: 10
+                      returnAvailableResultCount:
+                        type: boolean
+                        example: true
+                      availableResultCount:
+                        type: integer
+                        example: 11  
+              TxResponse:
+                type: object
+                properties:
+                  RequestType:
+                    type: string
+                    default: PISearchParty
+                  TxResult:
+                    type: object
+                    properties:
+                      ResultCode:
+                        type: string
+                        example: SUCCESS
+                  ResponseObject:
+                    type: object
+                    properties:
+                      PISearchOutputResBObj:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PISearchOutputResBObj'
+      xml:
+        name: PISearchOutputRes
+    
+    
+    PISearchInputReqBObj:
+      type: object
+      properties:
+        SearchType:
+          description: Provide 'D' for Deterministic Search and 'P' for Probabilistic Search
+          type: string
+          enum: [D, P]
+        PartyType:
+          description: Provide 'P' for Person Search and 'O' for Organization Search
+          type: string
+          enum: [P,O]
+        PartyFilter:
+          description: Applies only for SearchType Deterministic Search. (When SearchType='D') 
+          type: string
+          enum: [Active,Inactive,All]
+        MaxReturn:
+          description: Number of records to fetch, this value will be ignored when greater than pageEndIndex value.
+          type: integer
+          example: 5
+        MinScore:
+          description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
+          type: integer
+          example : 0
+        MinSuspectType:
+          description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
+          type: string
+          enum: [A1,B,C]
+        PersonNameUsageValue:
+          type: string
+          example : Legal
+        LastName:
+          type: string
+        GivenNameOne:
+          type: string
+        GivenNameTwo:
+          type: string
+        GivenNameThree:
+          type: string
+        GivenNameFour:
+          type: string
+        DateOfBirth:
+          type: string
+        OrganizationNameUsageValue:
+          type: string
+          example: Smith
+        OrganizationName:
+          type: string
+        EstablishedDate:
+          type: string
+        AddressUsageValue:
+          type: string
+        AddrLineOne:
+          type: string
+        AddrLineTwo:
+          type: string
+        AddrLineThree:
+          type: string
+        CityName:
+          type: string
+        ZipPostalCode:
+          type: string
+        ProvinceStateValue:
+          type: string
+        CountryName:
+          type: string
+        IdentificationNum:
+          type: string
+        IdentificationTypeValue:
+          type: string
+        ContactMethodReferenceNumber:
+          type: string
+        ContactMethodUsageValue:
+          type: string
+        PartyEquivalencyNum:
+          type: string
+        PartyEquivalencyTypeValue:
+          type: string
+    
+        
+    PISearchOutputResBObj:
+      type: object
+      properties:
+        SearchType:
+          type: string
+          enum: [Deterministic, Probabilistic]
+        PartyType:
+          type: string
+          enum: [Person,Organization]
+        PartyFilter:
+          description: Applies only when SearchType = Deterministic
+          type: string
+          enum: [Active,Inactive,All]
+        MaxReturn:
+          type: integer
+          default: 0
+          example: 5
+        MinScore:
+          description: Applies only when SearchType = Probabilistic
+          type: integer
+          example: 0
+        MinSuspectType:
+          type: integer
+        PersonNameUsageValue:
+          type: string
+        LastName:
+          type: string
+        GivenNameOne:
+          type: string
+        GivenNameTwo:
+          type: string
+        GivenNameThree:
+          type: string
+        GivenNameFour:
+          type: string
+        DateOfBirth:
+          type: string
+        OrganizationNameUsageValue:
+          type: string
+        OrganizationName:
+          type: string
+        EstablishedDate:
+          type: string
+        AddressUsageValue:
+          type: string
+        AddrLineOne:
+          type: string
+        AddrLineTwo:
+          type: string
+        AddrLineThree:
+          type: string
+        CityName:
+          type: string
+        ZipPostalCode:
+          type: string
+        ProvinceStateValue:
+          type: string
+        CountryName:
+          type: string
+        IdentificationNum:
+          type: string
+        IdentificationTypeValue:
+          type: string
+        ContactMethodReferenceNumber:
+          type: string
+        ContactMethodUsageValue:
+          type: string
+        PartyEquivalencyNum:
+          type: string
+        PartyEquivalencyTypeValue:
+          type: string
+  
