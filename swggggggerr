@@ -3,9 +3,7 @@ info:
   version: "1.0.0"
   title: "PISearchParty"
   description: | 
-        ## PISearchParty transaction is a wrapper transaction that allows to search for Person or Organization using both Deterministic and Probabilistic matching styles. 
-        
-        ## Input object is PISearchInput which consists of several fields and output object is PISearchOutput. 
+        ## PISearchParty transaction is a wrapper transaction that allows to search for Person or Organization using both Deterministic and Probabilistic matching styles.
         
         ### Mandatory Input for Deterministic Person Search 
            - LastName or
@@ -163,7 +161,7 @@ components:
                         example: true
                       availableResultCount:
                         type: integer
-                        example: 11  
+                        example: 1  
               TxResponse:
                 type: object
                 properties:
@@ -205,136 +203,204 @@ components:
         MaxReturn:
           description: Number of records to fetch, this value will be ignored when greater than pageEndIndex value.
           type: integer
-          example: 5
+          example: 
         MinScore:
           description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
           type: integer
-          example : 0
+          example : 
         MinSuspectType:
           description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
           type: string
           enum: [A1,B,C]
+          example:
         PersonNameUsageValue:
           type: string
           example : Legal
         LastName:
           type: string
+          example: Smith
         GivenNameOne:
           type: string
+          example: 
         GivenNameTwo:
           type: string
+          example: 
         GivenNameThree:
           type: string
+          example: 
         GivenNameFour:
           type: string
+          example: 
         DateOfBirth:
           type: string
+          example: 1990-01-01
         OrganizationNameUsageValue:
           type: string
-          example: Smith
+          example : Legal
         OrganizationName:
           type: string
+          example: 
         EstablishedDate:
           type: string
+          example: 
         AddressUsageValue:
           type: string
+          example: Primary Residence
         AddrLineOne:
           type: string
+          example: ABC 123
         AddrLineTwo:
           type: string
+          example: 
         AddrLineThree:
           type: string
+          example: 
         CityName:
           type: string
+          example: Basin City
         ZipPostalCode:
           type: string
+          example: 12345
         ProvinceStateValue:
           type: string
+          example: WA
         CountryName:
           type: string
+          example: United States of America
         IdentificationNum:
+          description: Person or Organization identification types
           type: string
+          example: 
         IdentificationTypeValue:
+          description: Person or Organization identification types value
           type: string
+          example: 
         ContactMethodReferenceNumber:
+          description: Reference Number could be Phone numbers or Email address
           type: string
+          example: 
         ContactMethodUsageValue:
           type: string
+          enum: [Personal Email,Home Telephone]
+          example:
         PartyEquivalencyNum:
+          description: Source Number
           type: string
+          example: 
         PartyEquivalencyTypeValue:
+          description: Source system Type Value
           type: string
+          enum: [Household,WealthX]
+          example:
     
         
     PISearchOutputResBObj:
       type: object
       properties:
+        SearchScore:
+          type: integer
+          example: 
+        PartyId:
+          type: integer
+          example: 9152627614254781212
+        PartyActiveIndicator:
+          type: string
+          enum: [Y,N]
+        Gender:
+          type: string
+          example: M
         SearchType:
+          description: Provide 'D' for Deterministic Search and 'P' for Probabilistic Search
           type: string
-          enum: [Deterministic, Probabilistic]
+          enum: [D, P]
         PartyType:
+          description: Provide 'P' for Person Search and 'O' for Organization Search
           type: string
-          enum: [Person,Organization]
+          enum: [P,O]
         PartyFilter:
-          description: Applies only when SearchType = Deterministic
+          description: Applies only for SearchType Deterministic Search. (When SearchType='D') 
           type: string
           enum: [Active,Inactive,All]
         MaxReturn:
+          description: Number of records to fetch, this value will be ignored when greater than pageEndIndex value.
           type: integer
-          default: 0
-          example: 5
+          example: 
         MinScore:
-          description: Applies only when SearchType = Probabilistic
+          description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
           type: integer
-          example: 0
+          example : 
         MinSuspectType:
-          type: integer
+          description: Applies only for SearchType Probabilistic Search. (When SearchType = 'P')
+          type: string
+          enum: [A1,B,C]
+          example: 
         PersonNameUsageValue:
           type: string
+          example : Legal
         LastName:
           type: string
+          example: Smith
         GivenNameOne:
           type: string
+          example: John
         GivenNameTwo:
           type: string
+          example: M
         GivenNameThree:
           type: string
+          example: 
         GivenNameFour:
           type: string
+          example: 
         DateOfBirth:
           type: string
+          example: 1990-01-01
         OrganizationNameUsageValue:
           type: string
+          example : Legal
         OrganizationName:
           type: string
+          example: 
         EstablishedDate:
           type: string
+          example: 
         AddressUsageValue:
           type: string
+          example: Primary Residence
         AddrLineOne:
           type: string
+          example: ABC 123
         AddrLineTwo:
           type: string
+          example: XYZ
         AddrLineThree:
           type: string
+          example: 
         CityName:
           type: string
+          example: Basin City
         ZipPostalCode:
           type: string
+          example: 12345
         ProvinceStateValue:
           type: string
+          example: WA
         CountryName:
           type: string
+          example: United States of America
         IdentificationNum:
+          description: Person or Organization identification types
           type: string
+          example: 
         IdentificationTypeValue:
+          description: Person or Organization identification types value
           type: string
+          example: 
         ContactMethodReferenceNumber:
+          description: Reference Number could be Phone numbers or Email address
           type: string
+          example: abc@gmail.com
         ContactMethodUsageValue:
           type: string
-        PartyEquivalencyNum:
-          type: string
-        PartyEquivalencyTypeValue:
-          type: string
+          enum: [Personal Email,Home Telephone]
   
