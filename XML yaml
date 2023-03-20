@@ -1,3 +1,80 @@
+swagger: '2.0'
+info:
+  title: getParty API
+  version: '1.0'
+host: your-api.com
+schemes:
+  - https
+paths:
+  /getparty:
+    post:
+      summary: getParty endpoint
+      consumes:
+        - application/xml
+      produces:
+        - application/xml
+      parameters:
+        - in: body
+          name: requestBody
+          required: true
+          schema:
+            $ref: '#/definitions/TCRMService'
+      responses:
+        '200':
+          description: OK
+  definitions:
+    TCRMService:
+      type: object
+      properties:
+        RequestControl:
+          type: object
+          properties:
+            requestID:
+              type: string
+            DWLControl:
+              type: object
+              properties:
+                requesterName:
+                  type: string
+                requesterLocale:
+                  type: string
+        TCRMInquiry:
+          type: object
+          properties:
+            InquiryType:
+              type: string
+            InquiryParam:
+              type: object
+              properties:
+                tcrmParam:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                  xml:
+                    namespace: "http://example.com"
+                    prefix: ""
+          xml:
+            namespace: "http://example.com"
+            prefix: ""
+            name: TCRMInquiry
+        xml:
+          namespace: "http://example.com"
+          prefix: ""
+          name: TCRMService
+          attribute:
+            xsi:schemaLocation: "http://myweb.com/schema MDMd.xsd"
+          namespaceSeparator: ":"
+
+
+
+
+
+
 components:
   schemas:
     myObject:
