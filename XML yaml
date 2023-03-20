@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Example API"
+consumes:
+  - application/xml
+produces:
+  - application/xml
+paths:
+  /example:
+    post:
+      summary: "Example endpoint"
+      parameters:
+        - in: body
+          name: body
+          description: "Example XML request"
+          required: true
+          schema:
+            type: object
+            xml:
+              name: RequestRoot
+              namespace: "http://example.com/xml"
+              prefix: "req"
+            properties:
+              exampleField:
+                type: string
+                description: "An example field"
+                xml:
+                  name: ExampleField
+                  namespace: "http://example.com/xml"
+                  prefix: "req"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: object
+            xml:
+              name: ResponseRoot
+              namespace: "http://example.com/xml"
+              prefix: "res"
+            properties:
+              exampleField:
+                type: string
+                description: "An example field"
+                xml:
+                  name: ExampleField
+                  namespace: "http://example.com/xml"
+                  prefix: "res"
